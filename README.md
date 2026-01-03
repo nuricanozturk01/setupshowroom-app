@@ -10,6 +10,8 @@ SetupShowroom transforms the way people share and discover workspace setups by p
 
 <img src="images/sys.svg"/>
 
+<img src="images/dev.svg"/>
+
 ## ✨ Key Features
 
 ### Social Interaction
