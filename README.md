@@ -8,7 +8,7 @@ SetupShowroom transforms the way people share and discover workspace setups by p
 
 ## System Card Example
 
-<img src="../images/sys.svg"/>
+<img src="images/sys.svg"/>
 
 ## ✨ Key Features
 
