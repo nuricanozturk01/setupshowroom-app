@@ -6,6 +6,10 @@ A comprehensive social platform where users showcase their personal setups, enga
 
 SetupShowroom transforms the way people share and discover workspace setups by providing a feature-rich social platform. Users can upload their setup photos, interact with other setup enthusiasts, generate animated showcase cards from their profile information, and build curated lists of favorite products.
 
+## System Card Example
+
+<img src="../images/sys.svg"/>
+
 ## ✨ Key Features
 
 ### Social Interaction
@@ -117,7 +121,7 @@ SetupShowroom transforms the way people share and discover workspace setups by p
 
 ```bash
 docker compose up -d
-``` 
+```
 
 - **Frontend:** http://localhost:4200
 - **Minio:** http://localhost:9001
@@ -129,11 +133,11 @@ docker compose up -d
 ```bash
 docker compose down
 ```
-- **with delete data:** 
+- **with delete data:**
 
 ```bash
 docker compose down -v
-``` 
+```
 
 ## Images
 
