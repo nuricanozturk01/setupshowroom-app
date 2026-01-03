@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "app.storage.s3")
 public class S3StorageBackendConfigProps {
   private String endpoint;
+  private String publicEndpoint;
   private String bucket;
   private String basePath;
   private String trashPath;

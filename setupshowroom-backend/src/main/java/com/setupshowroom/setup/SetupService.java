@@ -26,11 +26,13 @@ import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -47,6 +49,12 @@ public class SetupService {
   private final @NotNull TagRepository tagRepository;
   private final @NotNull SetupConverter setupConverter;
   private final @NotNull UserConverter userConverter;
+
+  @Value("${app.storage.s3.endpoint}")
+  private String s3Url;
+
+  @Value("${app.storage.s3.public-endpoint}")
+  private String publicS3Url;
 
   public @NotNull SetupInfo createSetup(
       final @NotNull User user,
@@ -343,14 +351,19 @@ public class SetupService {
         .createdAt(setup.getEmbeddedTimestamps().getCreatedAt())
         .title(setup.getTitle())
         .categories(setup.getCategories().stream().map(SetupCategory::name).toList())
-        .images(List.copyOf(setup.getImages()))
-        .videos(List.copyOf(setup.getVideos()))
+        .images(this.toPublicUrl(setup.getImages()))
+        .videos(this.toPublicUrl(setup.getVideos()))
         .tags(setup.getTags().stream().map(Tag::getName).toList())
         .likes(likeCount)
         .isLiked(isUserLiked)
         .commentSize(commentSize)
         .isFavorite(isFav)
         .build();
+  }
+
+  private @NotNull List<String> toPublicUrl(final @NotNull Set<String> images) {
+
+    return images.stream().map(i -> i.replace(this.s3Url, this.publicS3Url)).toList();
   }
 
   @SuppressWarnings("unused")

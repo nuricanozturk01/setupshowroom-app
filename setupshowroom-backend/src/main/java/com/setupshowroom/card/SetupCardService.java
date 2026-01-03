@@ -43,6 +43,9 @@ public class SetupCardService {
   @Value("${app.base-url}")
   private String baseUrl;
 
+  @Value("${app.public-base-url}")
+  private String publicBaseUrl;
+
   public SetupCardService(
       final @NotNull ResourceLoader resourceLoader, final @NotNull UserRepository userRepository) {
     this.resourceLoader = resourceLoader;
@@ -252,6 +255,7 @@ public class SetupCardService {
 
     return SetupCardType.getAllCategories().stream()
         .map(c -> struct.formatted(this.baseUrl, userId, c))
+        .map(c -> c.replace(this.baseUrl, this.publicBaseUrl))
         .toList();
   }
 

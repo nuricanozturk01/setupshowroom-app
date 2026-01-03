@@ -113,9 +113,13 @@ SetupShowroom transforms the way people share and discover workspace setups by p
 
 ---
 
-**SetupShowroom** represents the intersection of social networking and workspace inspiration, powered by enterprise-grade technology stack and designed for scalability and community growth.
+## How to run in Local Environment?
 
-**Live**: [setupshowroom.com](https//setupshowroom.com)
+- docker compose up -d
+- Frontend: http://localhost:4200
+- Minio: http://localhost:9001
+  - username: admin
+  - password: admin123
 
 ## Images
 

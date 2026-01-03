@@ -41,6 +41,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,6 +60,12 @@ public class UserService {
   private final @NotNull SystemRequirementRepository systemRequirementRepository;
   private final @NotNull SetupStorageService setupStorageService;
   private final @NotNull ContentModerationService contentModerationService;
+
+  @Value("${app.storage.s3.endpoint}")
+  private String s3Url;
+
+  @Value("${app.storage.s3.public-endpoint}")
+  private String publicS3Url;
 
   public @NotNull UserInfo update(
       final @NotNull UserForm updateForm, final @NotNull String userId) {
@@ -148,6 +155,10 @@ public class UserService {
 
     final var systemInfo = this.systemInfoConverter.toSystemInfo(user.getSystemRequirement());
 
+    final var imageList = this.toPublicUrl(systemInfo);
+
+    systemInfo.setImages(imageList);
+
     return this.profileConverter.toProfileInfo(profile, productGroups, systemInfo, user);
   }
 
@@ -163,7 +174,27 @@ public class UserService {
 
     final var systemInfo = this.systemInfoConverter.toSystemInfo(user.getSystemRequirement());
 
+    final var imageList = this.toPublicUrl(systemInfo);
+
+    systemInfo.setImages(imageList);
+
     return this.profileConverter.toProfileInfo(profile, productGroups, systemInfo, user);
+  }
+
+  private SortedSet<String> toPublicUrl(final @NotNull SystemInfo systemInfo) {
+
+    final var images = systemInfo.getImages();
+
+    if (images == null || images.isEmpty()) {
+      return new TreeSet<>();
+    }
+
+    final var imageList = new TreeSet<String>();
+    for (final var image : systemInfo.getImages()) {
+      imageList.add(image.replace(this.s3Url, this.publicS3Url));
+    }
+
+    return imageList;
   }
 
   private @NotNull FavoriteProductGroupInfo toFavoriteProductGroupInfo(
@@ -247,6 +278,11 @@ public class UserService {
             .toList();
 
     final SystemInfo systemInfo = this.systemInfoConverter.toSystemInfo(systemRequirement);
+
+    final var imageList = this.toPublicUrl(systemInfo);
+
+    systemInfo.setImages(imageList);
+
     log.warn("User: {} updated system info", user.getUsername());
     return this.profileConverter.toProfileInfo(
         user.getUserProfile(), productGroups, systemInfo, user);
