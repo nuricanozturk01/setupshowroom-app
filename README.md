@@ -115,11 +115,25 @@ SetupShowroom transforms the way people share and discover workspace setups by p
 
 ## How to run in Local Environment?
 
-- docker compose up -d
-- Frontend: http://localhost:4200
-- Minio: http://localhost:9001
-  - username: admin
-  - password: admin123
+```bash
+docker compose up -d
+``` 
+
+- **Frontend:** http://localhost:4200
+- **Minio:** http://localhost:9001
+  - **username:** admin
+  - **password:** admin123
+
+## How to stop?
+
+```bash
+docker compose down
+```
+- **with delete data:** 
+
+```bash
+docker compose down -v
+``` 
 
 ## Images
 
